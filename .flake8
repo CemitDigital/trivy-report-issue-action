@@ -1,0 +1,12 @@
+[flake8]
+# Certain errors are ignored, they are:
+# E501 - 79 line length
+# W503 - Line break occurred before a binary operator
+# C901 - Function is too complex
+# E203 - Whitespace before ':' (incompatible with black)
+#
+# C901 can be run manually to find too complex function and try to refactor
+ignore = E501,W503,C901,E203
+max-line-length = 90
+select = "B,C,E,F,W,T4,B9"
+exclude = .vscode/*.py,.venv/**/*

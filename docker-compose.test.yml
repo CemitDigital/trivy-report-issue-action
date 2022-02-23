@@ -1,0 +1,7 @@
+services:
+  # Service which runs the tests
+  trivy-reporter-test:
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+      target: test

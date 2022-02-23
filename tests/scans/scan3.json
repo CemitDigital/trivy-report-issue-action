@@ -1,0 +1,511 @@
+{
+  "SchemaVersion": 2,
+  "ArtifactName": "python:latest",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "OS": {
+      "Family": "debian",
+      "Name": "10.11"
+    },
+    "ImageID": "sha256:0ac3e6b50b1f959ad557f2862ec5a741ce077f1d9bf87526a45bb4bc6f936115",
+    "DiffIDs": [
+      "sha256:ad6b69b549193f81b039a1d478bc896f6e460c77c1849a4374ab95f9a3d2cea2",
+      "sha256:c42229255bc94b196a4d5aeb50642c842815cc0352baa851d1c65cbe365b384b",
+      "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef",
+      "sha256:f0304a22be8f36cb9feccfd9b1e9534ab9a888fea425eaaa37c28341d8296fa8"
+    ],
+    "RepoTags": [
+      "python:latest"
+    ],
+    "ImageConfig": {
+      "architecture": "amd64",
+      "created": "2022-02-08T14:47:20.615059435Z",
+      "history": [
+        {
+          "created": "2021-12-21T01:23:04Z",
+          "created_by": "/bin/sh -c #(nop) ADD file:bd5c9e0e0145fe33beee9d73615cc89b5c5459bb84ea164cb1bbd8c999f0c2e4 in / "
+        },
+        {
+          "created": "2021-12-21T01:23:04Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"bash\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2021-12-21T09:37:38Z",
+          "created_by": "/bin/sh -c #(nop)  ENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "empty_layer": true
+        },
+        {
+          "created": "2021-12-21T09:37:39Z",
+          "created_by": "/bin/sh -c #(nop)  ENV LANG=C.UTF-8",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:ad6b69b549193f81b039a1d478bc896f6e460c77c1849a4374ab95f9a3d2cea2",
+          "sha256:c42229255bc94b196a4d5aeb50642c842815cc0352baa851d1c65cbe365b384b",
+          "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef",
+          "sha256:f0304a22be8f36cb9feccfd9b1e9534ab9a888fea425eaaa37c28341d8296fa8"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "/bin/sh",
+          "-c",
+          "/docker/run_server.sh"
+        ],
+        "Env": [
+          "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/docker",
+          "LANG=C.UTF-8",
+          "GPG_KEY=0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D",
+          "PYTHON_VERSION=3.7.12",
+          "PYTHON_PIP_VERSION=21.2.4",
+          "PYTHON_SETUPTOOLS_VERSION=57.5.0",
+          "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/3cb8888cc2869620f57d5d2da64da38f516078c7/public/get-pip.py",
+          "PYTHON_GET_PIP_SHA256=c518250e91a70d7b20cceb15272209a4ded2a0c263ae5776f129e0d9b5674309",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "PYTHONUNBUFFERED=1",
+          "DOCKER_APP_ROOT=/app",
+          "DATA_FOLDER=/data",
+          "DOCKER_SCRIPT_ROOT=/docker",
+          "PYTHONPATH=/app"
+        ],
+        "WorkingDir": "/app",
+        "ArgsEscaped": true
+      }
+    }
+  },
+  "Results": [
+    {
+      "Target": "python:latest (debian 10.11)",
+      "Class": "os-pkgs",
+      "Type": "debian",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2022-22822",
+          "VendorIDs": [
+            "DSA-5073-1"
+          ],
+          "PkgName": "libexpat1",
+          "InstalledVersion": "2.2.6-2+deb10u1",
+          "FixedVersion": "2.2.6-2+deb10u2",
+          "Layer": {
+            "DiffID": "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-22822",
+          "Title": "expat: Integer overflow in addBinding in xmlparse.c",
+          "Description": "addBinding in xmlparse.c in Expat (aka libexpat) before 2.4.3 has an integer overflow.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2022/01/17/3",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-22822",
+            "https://github.com/libexpat/libexpat/pull/539",
+            "https://www.debian.org/security/2022/dsa-5073",
+            "https://www.tenable.com/security/tns-2022-05"
+          ],
+          "PublishedDate": "2022-01-10T14:12:00Z",
+          "LastModifiedDate": "2022-02-14T12:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-22823",
+          "VendorIDs": [
+            "DSA-5073-1"
+          ],
+          "PkgName": "libexpat1",
+          "InstalledVersion": "2.2.6-2+deb10u1",
+          "FixedVersion": "2.2.6-2+deb10u2",
+          "Layer": {
+            "DiffID": "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-22823",
+          "Title": "expat: Integer overflow in build_model in xmlparse.c",
+          "Description": "build_model in xmlparse.c in Expat (aka libexpat) before 2.4.3 has an integer overflow.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2022/01/17/3",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-22823",
+            "https://github.com/libexpat/libexpat/pull/539",
+            "https://www.debian.org/security/2022/dsa-5073",
+            "https://www.tenable.com/security/tns-2022-05"
+          ],
+          "PublishedDate": "2022-01-10T14:12:00Z",
+          "LastModifiedDate": "2022-02-14T12:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-22824",
+          "VendorIDs": [
+            "DSA-5073-1"
+          ],
+          "PkgName": "libexpat1",
+          "InstalledVersion": "2.2.6-2+deb10u1",
+          "FixedVersion": "2.2.6-2+deb10u2",
+          "Layer": {
+            "DiffID": "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-22824",
+          "Title": "expat: Integer overflow in defineAttribute in xmlparse.c",
+          "Description": "defineAttribute in xmlparse.c in Expat (aka libexpat) before 2.4.3 has an integer overflow.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2022/01/17/3",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-22824",
+            "https://github.com/libexpat/libexpat/pull/539",
+            "https://www.debian.org/security/2022/dsa-5073",
+            "https://www.tenable.com/security/tns-2022-05"
+          ],
+          "PublishedDate": "2022-01-10T14:12:00Z",
+          "LastModifiedDate": "2022-02-14T12:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-23852",
+          "VendorIDs": [
+            "DSA-5073-1"
+          ],
+          "PkgName": "libexpat1",
+          "InstalledVersion": "2.2.6-2+deb10u1",
+          "FixedVersion": "2.2.6-2+deb10u2",
+          "Layer": {
+            "DiffID": "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-23852",
+          "Title": "expat: integer overflow in function XML_GetBuffer",
+          "Description": "Expat (aka libexpat) before 2.4.4 has a signed integer overflow in XML_GetBuffer, for configurations with a nonzero XML_CONTEXT_BYTES.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-23852",
+            "https://github.com/libexpat/libexpat/pull/550",
+            "https://www.debian.org/security/2022/dsa-5073",
+            "https://www.tenable.com/security/tns-2022-05"
+          ],
+          "PublishedDate": "2022-01-24T02:15:00Z",
+          "LastModifiedDate": "2022-02-14T12:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-23990",
+          "VendorIDs": [
+            "DSA-5073-1"
+          ],
+          "PkgName": "libexpat1",
+          "InstalledVersion": "2.2.6-2+deb10u1",
+          "FixedVersion": "2.2.6-2+deb10u2",
+          "Layer": {
+            "DiffID": "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-23990",
+          "Title": "expat: integer overflow in the doProlog function",
+          "Description": "Expat (aka libexpat) before 2.4.4 has an integer overflow in the doProlog function.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-23990",
+            "https://github.com/libexpat/libexpat/pull/551",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/34NXVL2RZC2YZRV74ZQ3RNFB7WCEUP7D/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/R7FF2UH7MPXKTADYSJUAHI2Y5UHBSHUH/",
+            "https://www.debian.org/security/2022/dsa-5073",
+            "https://www.tenable.com/security/tns-2022-05"
+          ],
+          "PublishedDate": "2022-01-26T19:15:00Z",
+          "LastModifiedDate": "2022-02-14T12:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-45960",
+          "VendorIDs": [
+            "DSA-5073-1"
+          ],
+          "PkgName": "libexpat1",
+          "InstalledVersion": "2.2.6-2+deb10u1",
+          "FixedVersion": "2.2.6-2+deb10u2",
+          "Layer": {
+            "DiffID": "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-45960",
+          "Title": "expat: Large number of prefixed XML attributes on a single tag can crash libexpat",
+          "Description": "In Expat (aka libexpat) before 2.4.3, a left shift by 29 (or more) places in the storeAtts function in xmlparse.c can lead to realloc misbehavior (e.g., allocating too few bytes, or only freeing memory).",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400"
+          ],
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:S/C:C/I:C/A:C",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 9,
+              "V3Score": 8.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.8
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2022/01/17/3",
+            "https://bugzilla.mozilla.org/show_bug.cgi?id=1217609",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45960",
+            "https://github.com/libexpat/libexpat/issues/531",
+            "https://github.com/libexpat/libexpat/pull/534",
+            "https://github.com/libexpat/libexpat/pull/534/commits/0adcb34c49bee5b19bd29b16a578c510c23597ea",
+            "https://security.netapp.com/advisory/ntap-20220121-0004/",
+            "https://www.debian.org/security/2022/dsa-5073",
+            "https://www.tenable.com/security/tns-2022-05"
+          ],
+          "PublishedDate": "2022-01-01T19:15:00Z",
+          "LastModifiedDate": "2022-02-14T12:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-46143",
+          "VendorIDs": [
+            "DSA-5073-1"
+          ],
+          "PkgName": "libexpat1",
+          "InstalledVersion": "2.2.6-2+deb10u1",
+          "FixedVersion": "2.2.6-2+deb10u2",
+          "Layer": {
+            "DiffID": "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-46143",
+          "Title": "expat: Integer overflow in doProlog in xmlparse.c",
+          "Description": "In doProlog in xmlparse.c in Expat (aka libexpat) before 2.4.3, an integer overflow exists for m_groupSize.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V2Score": 6.8,
+              "V3Score": 7.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.8
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2022/01/17/3",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-46143",
+            "https://github.com/libexpat/libexpat/issues/532",
+            "https://github.com/libexpat/libexpat/pull/538",
+            "https://security.netapp.com/advisory/ntap-20220121-0006/",
+            "https://www.debian.org/security/2022/dsa-5073",
+            "https://www.tenable.com/security/tns-2022-05"
+          ],
+          "PublishedDate": "2022-01-06T04:15:00Z",
+          "LastModifiedDate": "2022-02-14T12:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-22825",
+          "VendorIDs": [
+            "DSA-5073-1"
+          ],
+          "PkgName": "libexpat1",
+          "InstalledVersion": "2.2.6-2+deb10u1",
+          "FixedVersion": "2.2.6-2+deb10u2",
+          "Layer": {
+            "DiffID": "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-22825",
+          "Title": "expat: Integer overflow in lookup in xmlparse.c",
+          "Description": "lookup in xmlparse.c in Expat (aka libexpat) before 2.4.3 has an integer overflow.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V2Score": 6.8,
+              "V3Score": 8.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 8.8
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2022/01/17/3",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-22825",
+            "https://github.com/libexpat/libexpat/pull/539",
+            "https://www.debian.org/security/2022/dsa-5073",
+            "https://www.tenable.com/security/tns-2022-05"
+          ],
+          "PublishedDate": "2022-01-10T14:12:00Z",
+          "LastModifiedDate": "2022-02-14T12:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-22826",
+          "VendorIDs": [
+            "DSA-5073-1"
+          ],
+          "PkgName": "libexpat1",
+          "InstalledVersion": "2.2.6-2+deb10u1",
+          "FixedVersion": "2.2.6-2+deb10u2",
+          "Layer": {
+            "DiffID": "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-22826",
+          "Title": "expat: Integer overflow in nextScaffoldPart in xmlparse.c",
+          "Description": "nextScaffoldPart in xmlparse.c in Expat (aka libexpat) before 2.4.3 has an integer overflow.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V2Score": 6.8,
+              "V3Score": 8.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 8.8
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2022/01/17/3",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-22826",
+            "https://github.com/libexpat/libexpat/pull/539",
+            "https://www.debian.org/security/2022/dsa-5073",
+            "https://www.tenable.com/security/tns-2022-05"
+          ],
+          "PublishedDate": "2022-01-10T14:12:00Z",
+          "LastModifiedDate": "2022-02-14T12:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-22827",
+          "VendorIDs": [
+            "DSA-5073-1"
+          ],
+          "PkgName": "libexpat1",
+          "InstalledVersion": "2.2.6-2+deb10u1",
+          "FixedVersion": "2.2.6-2+deb10u2",
+          "Layer": {
+            "DiffID": "sha256:7c8c096c6c62abe0092daaec018f0dd5d44202941cf1fa6113005e593f5c02ef"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-22827",
+          "Title": "expat: Integer overflow in storeAtts in xmlparse.c",
+          "Description": "storeAtts in xmlparse.c in Expat (aka libexpat) before 2.4.3 has an integer overflow.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V2Score": 6.8,
+              "V3Score": 8.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 8.8
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2022/01/17/3",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-22827",
+            "https://github.com/libexpat/libexpat/pull/539",
+            "https://www.debian.org/security/2022/dsa-5073",
+            "https://www.tenable.com/security/tns-2022-05"
+          ],
+          "PublishedDate": "2022-01-10T14:12:00Z",
+          "LastModifiedDate": "2022-02-14T12:15:00Z"
+        }
+      ]
+    },
+    {
+      "Target": "Python",
+      "Class": "lang-pkgs",
+      "Type": "python-pkg"
+    }
+  ]
+}

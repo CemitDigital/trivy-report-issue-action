@@ -1,0 +1,11 @@
+services:
+  # Service which runs print_issues, arguments are passed to this command
+  trivy-reporter:
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+      target: dev
+    volumes:
+      - ./bin:/docker
+      - ./tests:/tests
+      - ./trivy_report:/trivy_report

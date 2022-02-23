@@ -1,0 +1,41 @@
+name: 'Syntax check and test'
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        uses: actions/checkout@v2
+      -
+        name: Install shfmt
+        run: sudo snap install shfmt
+      -
+        name: Run shfmt
+        run: shfmt -d entrypoint.sh
+      -
+        name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          cache: 'pip'
+      -
+        name: Install Python packages
+        run: pip install -r requirements.txt
+      -
+        name: Lint with flake8
+        run: flake8 .
+      -
+        name: Run isort
+        run: isort --check --diff .
+      -
+        name: Run black
+        run: black --check --diff .
+      -
+        name: Run tests
+        run: pytest -v
+        env:
+          PYTHONPATH: "."

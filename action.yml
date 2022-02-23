@@ -1,0 +1,32 @@
+name: "Create Issues from Trivy Reports"
+description: "Creates GitHub Issues from Trivy scan results"
+author: 'am0s'
+branding:
+  icon: 'check-square'
+  color: 'blue'
+inputs:
+  token:
+    description: "GitHub token"
+    required: true
+  input-filename:
+    description: "Filename containing Trivy scan results, in JSON format"
+    required: true
+  label:
+    description: "Issue label, separated by comma"
+    required: false
+    default: "vulnerability"
+  assignee:
+    description: "Issue assignees, separated by comma"
+    required: false
+  project-id:
+    description: "Project ID to associate the issue with"
+    required: false
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  env:
+    GITHUB_TOKEN: ${{ inputs.token }}
+    INPUT_LABEL: ${{ inputs.label }}
+    INPUT_ASSIGNEE: ${{ inputs.assignee }}
+    INPUT_PROJECT_ID: ${{ inputs.project-id }}
+    INPUT_FILENAME: ${{ inputs.input-filename }}

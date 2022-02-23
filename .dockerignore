@@ -1,0 +1,7 @@
+*
+!entrypoint.sh
+!trivy_report/*
+!bin/*
+!requirements.txt
+!tests/*
+!pytest.ini

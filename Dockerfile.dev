@@ -1,0 +1,35 @@
+# Dockerfile used for development and testing
+FROM python:latest AS base
+
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
+    apt-get update --allow-releaseinfo-change && \
+    DEBIAN_FRONTEND="noninteractive" apt-get -yq install \
+        bash \
+        curl \
+        jq \
+        gh && \
+    rm -rf /var/lib/apt/lists/* $HOME/.python_history $HOME/.wget-hsts
+
+ENV PYTHONPATH="/"
+
+FROM base AS dev
+
+COPY ./requirements.txt /
+RUN pip install -U \
+        pip && \
+    pip install -r /requirements.txt && \
+    rm -rf $HOME/.cache $HOME/.python_history $HOME/.wget-hsts
+
+COPY ./bin/print_issues /docker/print_issues
+COPY ./trivy_report /trivy_report
+COPY ./tests/ /tests/
+
+RUN chmod +x /docker/*
+
+ENTRYPOINT ["/docker/print_issues"]
+
+FROM dev AS test
+
+ENTRYPOINT []
+CMD ["pytest", "/tests"]
