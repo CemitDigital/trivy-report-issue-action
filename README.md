@@ -1,4 +1,4 @@
-# GitHub Action - Creating Issues from Trivy Reports
+# GitHub Action - Trivy Issue Reporter
 
 This GitHub action reports results from a [Trivy](https://github.com/aquasecurity/trivy) vulnerability scan as GitHub issues.
 It will parse the *JSON* file and look for any vulnerabilties, and report them as issues (unless they are already reported).

@@ -1,4 +1,4 @@
-name: "Create Issues from Trivy Reports"
+name: "Trivy Issue Reporter"
 description: "Creates GitHub Issues from Trivy scan results"
 author: 'am0s'
 branding:
