@@ -27,6 +27,9 @@ def test_generate_report1_fastapi():
         """\
 # Vulnerabilities found for poetry package `fastapi-0.63.0` in `poetry.lock`
 
+## Fixed in version
+**0.65.2**
+
 ## `CVE-2021-32677` - Skill-sdk version 1.0.6 updates its dependency "FastAPI" to v0.65.2 to include a security fix.
 
 FastAPI is a web framework for building APIs with Python 3.6+ based on standard Python type hints. FastAPI versions lower than 0.65.2 that used cookies for authentication in path operations that received JSON payloads sent by browsers were vulnerable to a Cross-Site Request Forgery (CSRF) attack. In versions lower than 0.65.2, FastAPI would try to read the request payload as JSON even if the content-type header sent was not set to application/json or a compatible JSON media type (e.g. application/geo+json). A request with a content type of text/plain containing JSON data would be accepted and the JSON data would be extracted. Requests with content type text/plain are exempt from CORS preflights, for being considered Simple requests. The browser will execute them right away including cookies, and the text content could be a JSON string that would be parsed and accepted by the FastAPI application. This is fixed in FastAPI 0.65.2. The request data is now parsed as JSON only if the content-type header is application/json or another JSON compatible media type like application/geo+json. It's best to upgrade to the latest FastAPI, but if updating is not possible then a middleware or a dependency that checks the content-type header and aborts the request if it is not application/json or another JSON compatible content type can act as a mitigating workaround.
@@ -67,6 +70,9 @@ def test_generate_report1_numpy():
         """\
 # Vulnerabilities found for poetry package `numpy-1.21.5` in `poetry.lock`
 
+## Fixed in version
+**1.22.0**
+
 ## `CVE-2021-41496` - numpy: buffer overflow in the array_from_pyobj() in fortranobject.c
 
 ** DISPUTED ** Buffer overflow in the array_from_pyobj function of fortranobject.c in NumPy < 1.19, which allows attackers to conduct a Denial of Service attacks by carefully constructing an array with negative values. NOTE: The vendor does not agree this is a vulnerability; the negative dimensions can only be created by an already privileged user (or internally).
@@ -98,6 +104,9 @@ def test_generate_report1_pillow():
     testfixtures.compare(
         issue.body,
         """# Vulnerabilities found for poetry package `pillow-8.2.0` in `poetry.lock`
+
+## Fixed in version
+**8.3.0**
 
 ## `CVE-2021-34552` - python-pillow: Buffer overflow in image convert function
 
@@ -205,6 +214,9 @@ def test_generate_report2_fastapi():
         """\
 # Vulnerabilities found for poetry package `urllib3-1.26.4` in `poetry.lock`
 
+## Fixed in version
+**1.26.5**
+
 ## `CVE-2021-33503` - python-urllib3: ReDoS in the parsing of authority part of URL
 
 An issue was discovered in urllib3 before 1.26.5. When provided with a URL containing many @ characters in the authority component, the authority regular expression exhibits catastrophic backtracking, causing a denial of service if a URL were passed as a parameter or redirected to via an HTTP redirect.
@@ -247,6 +259,9 @@ def test_generate_report3_libexpat1():
         issue.body,
         """\
 # Vulnerabilities found for debian package `libexpat1-2.2.6-2+deb10u1` in `python:latest (debian 10.11)`
+
+## Fixed in version
+**2.2.6-2+deb10u2**
 
 ## `CVE-2022-22822` - expat: Integer overflow in addBinding in xmlparse.c
 

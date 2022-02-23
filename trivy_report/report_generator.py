@@ -1,6 +1,6 @@
 import collections
 from dataclasses import dataclass
-from typing import Iterator, List, OrderedDict, TypedDict
+from typing import Iterator, List, Optional, OrderedDict, TypedDict
 
 # Types for dictionaries found in JSON data
 
@@ -52,6 +52,8 @@ class Report:
     package_name: str
     # Version for package
     package_version: str
+    # Version of package the vulnerability was fixed
+    package_fixed_version: Optional[str]
     # Type of package, e.g. 'poetry' or 'debian'
     package_type: str
     # The file or image that contains the vulnerability, e.g. 'poetry.lock'
@@ -103,6 +105,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
         for vulnerability in vulnerabilities:
             package_name = vulnerability["PkgName"]
             package_version = vulnerability["InstalledVersion"]
+            package_fixed_version = vulnerability["FixedVersion"]
             package = f"{package_name}-{package_version}"
             report_id = f"{package}"
             has_issue = False
@@ -126,6 +129,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
                     package=package,
                     package_name=package_name,
                     package_version=package_version,
+                    package_fixed_version=package_fixed_version,
                     package_type=package_type,
                     target=result["Target"],
                     vulnerabilities=[vulnerability],
@@ -145,6 +149,12 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
 
         issue_body = f"""\
 # Vulnerabilities found for {report.package_type} package `{report.package}` in `{report.target}`
+
+"""
+        if report.package_fixed_version:
+            issue_body += f"""\
+## Fixed in version
+**{report.package_fixed_version}**
 
 """
         for vulnerability_idx, vulnerability in enumerate(

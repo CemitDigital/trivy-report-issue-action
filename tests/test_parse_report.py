@@ -38,6 +38,7 @@ def test_parse_report1():
     report = reports["fastapi-0.63.0"]
     assert report.package_name == "fastapi"
     assert report.package_version == "0.63.0"
+    assert report.package_fixed_version == "0.65.2"
     assert report.package_type == "poetry"
     assert report.target == "poetry.lock"
     assert len(report.vulnerabilities) == 1
@@ -52,6 +53,7 @@ def test_parse_report1():
     report = reports["numpy-1.21.5"]
     assert report.package_name == "numpy"
     assert report.package_version == "1.21.5"
+    assert report.package_fixed_version == "1.22.0"
     assert report.package_type == "poetry"
     assert report.target == "poetry.lock"
     assert len(report.vulnerabilities) == 1
@@ -66,6 +68,7 @@ def test_parse_report1():
     report = reports["pillow-8.2.0"]
     assert report.package_name == "pillow"
     assert report.package_version == "8.2.0"
+    assert report.package_fixed_version == "8.3.0"
     assert report.package_type == "poetry"
     assert report.target == "poetry.lock"
     assert len(report.vulnerabilities) == 4
@@ -87,6 +90,7 @@ def test_parse_report2():
     report = reports["urllib3-1.26.4"]
     assert report.package_name == "urllib3"
     assert report.package_version == "1.26.4"
+    assert report.package_fixed_version == "1.26.5"
     assert report.package_type == "poetry"
     assert report.target == "poetry.lock"
     assert len(report.vulnerabilities) == 1
@@ -109,6 +113,7 @@ def test_parse_report3():
     assert report.package_name == "libexpat1"
     assert report.package_version == "2.2.6-2+deb10u1"
     assert report.package_type == "debian"
+    assert report.package_fixed_version == "2.2.6-2+deb10u2"
     assert report.target == "python:latest (debian 10.11)"
     assert len(report.vulnerabilities) == 10
     assert report.vulnerabilities[0]["VulnerabilityID"] == "CVE-2022-22822"
