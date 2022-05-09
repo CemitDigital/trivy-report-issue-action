@@ -75,10 +75,10 @@ def main():
     try:
         reports = parse_results(data, existing_issues=existing_issues)
     except TypeError as e:
-        if e == "The JSON entry does not contain Results key":
-            pass
-        else:
-            abort(f"Failed to parse Trivy JSON report: {e}")
+        abort(f"Failed to parse Trivy JSON report: {e}")
+    except ResultError as e:
+        print("No results from scan.")
+        sys.exit(0)
     issues = generate_issues(reports)
 
     for issue in issues:
