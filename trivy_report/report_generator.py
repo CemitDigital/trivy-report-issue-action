@@ -84,7 +84,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
     try:
         results = data["Results"]
     except Exception as e:
-        raise TypeError(
+        raise ResultError(
             f"The JSON entry does not contain Results key"
         )
     if not isinstance(results, list):
