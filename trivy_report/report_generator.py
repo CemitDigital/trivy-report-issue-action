@@ -158,8 +158,11 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
                 report = Report(
                     kind="Secret",
                     id=startline,
-                    package_type=category,
                     package=rule_id,
+                    package_name='',
+                    package_version='',
+                    package_fixed_version='',
+                    package_type=category,
                     target=result["Target"],
                     vulnerabilities=[secret],
                 )
