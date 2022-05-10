@@ -192,7 +192,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             report = reports.get(lookup_id)
             if report is None:
                 report = Report(
-                    kind=f"Vulnerability"
+                    kind=f"Vulnerability",
                     id=report_id,
                     package=package,
                     package_name=package_name,
