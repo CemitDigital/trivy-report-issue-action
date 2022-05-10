@@ -228,7 +228,7 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
 
                 | Category     | Description | Severity | Line No. |   Match   |
                 |:------------:|:-----------:|:--------:|:--------:|:----------|
-                |{vulnerability['Category']}|{vulnerability['Title']}|{vulnerability['Severity']}|{vulnerability['Startline']}|{vulnerability['Match']}|
+                |{vulnerability['Category']}|{vulnerability['Title']}|{vulnerability['Severity']}|{vulnerability['StartLine']}|{vulnerability['Match']}|
 
                 """
 
