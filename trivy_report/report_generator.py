@@ -12,7 +12,7 @@ class VulnerabilityDict(TypedDict):
     Category: str
     Match: str
     StartLine: str
-    Endline: str
+    EndLine: str
     VulnerabilityID: str
     PkgName: str
     InstalledVersion: str
@@ -211,7 +211,7 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
     """
     Iterates all reports and renders them into GitHub issues."""
     for report in reports:
-        if report.kind == "secret":
+        if report.kind == "Secret":
             issue_title = f"Security Alert: {report.package_type} Secret Found - {report.package}"
 
             issue_body = f"""\

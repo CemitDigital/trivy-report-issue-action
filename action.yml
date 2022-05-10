@@ -1,6 +1,6 @@
 name: "Trivy Issue Reporter"
 description: "Creates GitHub Issues from Trivy scan results"
-author: 'am0s'
+author: 'b34rd-tek'
 branding:
   icon: 'check-square'
   color: 'blue'
