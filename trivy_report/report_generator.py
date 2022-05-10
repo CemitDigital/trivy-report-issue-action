@@ -58,7 +58,7 @@ class Secret:
     startline: str
     endline: str
     match: str
-  
+
 
 @dataclass
 class Report:
@@ -137,8 +137,6 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
         for secret in secrets:
             rule_id = secret["RuleID"]
             category = secret["Category"]
-            severity = secret["Severity"]
-            title = secret["Title"]
             startline = secret["StartLine"]
             endline = secret["EndLine"]
             match = secret["Match"]
@@ -153,9 +151,9 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
                     break
             if has_issue:
                 continue
-              
+          
             lookup_id = f"{startline}:{endline}"
-             
+          
             report = reports.get(lookup_id)
             if report is None:
                 report = Report(
@@ -169,7 +167,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
                 reports[lookup_id] = report
             else:
                 report.vulnerabilities.append(secret)
-    
+
         for vulnerability in vulnerabilities:
             package_name = vulnerability["PkgName"]
             package_version = vulnerability["InstalledVersion"]
