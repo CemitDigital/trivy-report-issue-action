@@ -58,7 +58,7 @@ class Secret:
     startline: str
     endline: str
     match: str
-     
+  
 
 @dataclass
 class Report:
@@ -153,9 +153,9 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
                     break
             if has_issue:
                 continue
-                
+              
             lookup_id = f"{startline}:{endline}"
-                
+             
             report = reports.get(lookup_id)
             if report is None:
                 report = Report(
@@ -169,7 +169,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
                 reports[lookup_id] = report
             else:
                 report.vulnerabilities.append(secret)
-        
+    
         for vulnerability in vulnerabilities:
             package_name = vulnerability["PkgName"]
             package_version = vulnerability["InstalledVersion"]
@@ -193,7 +193,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             report = reports.get(lookup_id)
             if report is None:
                 report = Report(
-                    kind=f"Vulnerability",
+                    kind="Vulnerability",
                     id=report_id,
                     package=package,
                     package_name=package_name,
@@ -228,8 +228,8 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
 
                 | Category     | Description | Severity | Line No. |   Match   |
                 |:------------:|:-----------:|:--------:|:--------:|:----------|
-                |{vulnerability['Category']}|{vulnerability['Title']}|{vulnerability['Severity']}|{vulnerability['Startline']}|{vulnerability['Match']}| 
-                
+                |{vulnerability['Category']}|{vulnerability['Title']}|{vulnerability['Severity']}|{vulnerability['Startline']}|{vulnerability['Match']}|
+
                 """
 
         else:
