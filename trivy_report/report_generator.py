@@ -139,12 +139,11 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             category = secret["Category"]
             startline = secret["StartLine"]
             endline = secret["EndLine"]
-            match = secret["Match"]
             has_issue = False
             for existing_issue in existing_issues:
                 issue_lower = existing_issue.lower()
                 if (
-                    issue_lower.find(match.lower()) != -1
+                    issue_lower.find(endline.lower()) != -1
                     and issue_lower.find(startline.lower()) != -1
                 ):
                     has_issue = True
@@ -157,10 +156,10 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             report = reports.get(lookup_id)
             if report is None:
                 report = Report(
-                    kind=result["Class"],
+                    kind="Secret",
+                    id=startine,
                     package_type=category,
                     package=rule_id,
-                    id=startline,
                     target=result["Target"],
                     vulnerabilities=[secret],
                 )
