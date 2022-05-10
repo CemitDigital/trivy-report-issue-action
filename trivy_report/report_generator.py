@@ -8,20 +8,20 @@ from typing import Iterator, List, Optional, OrderedDict, TypedDict
 
 
 class VulnerabilityDict(TypedDict):
-    RuleID: str
-    Category: str
-    Match: str
-    StartLine: str
-    EndLine: str
-    VulnerabilityID: str
-    PkgName: str
-    InstalledVersion: str
-    FixedVersion: str
+    RuleID: Optional[str]
+    Category: Optional[str]
+    Match: Optional[str]
+    StartLine: Optional[str]
+    EndLine: Optional[str]
+    VulnerabilityID: Optional[str]
+    PkgName: Optional[str]
+    InstalledVersion: Optional[str]
+    FixedVersion: Optional[str]
     Title: str
-    Description: str
+    Description: Optional[str]
     Severity: str
-    PrimaryURL: str
-    References: List[str]
+    PrimaryURL: Optional[str]
+    References: Optional[List[str]]
 
 
 class ResultDict(TypedDict):
