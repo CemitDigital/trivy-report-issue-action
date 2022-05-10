@@ -151,9 +151,9 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
                     break
             if has_issue:
                 continue
-         
+
             lookup_id = f"{startline}:{endline}"
-      
+
             report = reports.get(lookup_id)
             if report is None:
                 report = Report(
