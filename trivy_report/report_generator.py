@@ -48,6 +48,7 @@ class Vulnerability:
     url: str
     reference: str
 
+
 @dataclass
 class Secret:
     rule_id: str
@@ -57,7 +58,7 @@ class Secret:
     startline: str
     endline: str
     match: str
-        
+     
 
 @dataclass
 class Report:
@@ -104,7 +105,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
         results = data["Results"]
     except Exception as e:
         raise KeyError(
-            f"The JSON entry does not contain Results key"
+            f"The JSON entry does not contain Results key. Error {e}"
         )
     if not isinstance(results, list):
         raise TypeError(
@@ -143,7 +144,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             match = secret["Match"]
             has_issue = False
             for existing_issue in existing_issues:
-                issue_lower = esisting_issue.lower()
+                issue_lower = existing_issue.lower()
                 if (
                     issue_lower.find(match.lower()) != -1
                     and issue_lower.find(startline.lower()) != -1
@@ -220,14 +221,17 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
             # Secrets found for {report.package_type} type `{report.package}` in `{report.target}`
 
             """
-            issue_body += f"""\
+            for vulnerability_idx, vulnerability in enumerate(
+                report.vulnerabilities, start=1
+            ):
+                issue_body += f"""\
 
-            | Category     | Description | Severity | Line No. |   Match   |
-            |:------------:|:-----------:|:--------:|:--------:|:----------|
-            |{vulnerability['Category']}|{vulnerability['Title']}|{vulnerability['Severity']}|{vulnerability['Startline']}|{vulnerability['Match']}| 
-            
-            """
-            
+                | Category     | Description | Severity | Line No. |   Match   |
+                |:------------:|:-----------:|:--------:|:--------:|:----------|
+                |{vulnerability['Category']}|{vulnerability['Title']}|{vulnerability['Severity']}|{vulnerability['Startline']}|{vulnerability['Match']}| 
+                
+                """
+
         else:
             issue_title = f"Security Alert: {report.package_type} package {report.package}"
 
