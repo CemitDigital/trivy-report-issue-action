@@ -1,3 +1,5 @@
+
+
 import collections
 from dataclasses import dataclass
 from typing import Iterator, List, Optional, OrderedDict, TypedDict
@@ -6,6 +8,11 @@ from typing import Iterator, List, Optional, OrderedDict, TypedDict
 
 
 class VulnerabilityDict(TypedDict):
+    RuleID: str
+    Category: str
+    Match: str
+    StartLine: str
+    Endline: str
     VulnerabilityID: str
     PkgName: str
     InstalledVersion: str
@@ -41,9 +48,21 @@ class Vulnerability:
     url: str
     reference: str
 
+@dataclass
+class Secret:
+    rule_id: str
+    category: str
+    severity: str
+    title: str
+    startline: str
+    endline: str
+    match: str
+        
 
 @dataclass
 class Report:
+    # Kind of report Secret or Vulnerability
+    kind: str
     # Unique ID for report, based on package name and version
     id: str
     # Name and version of package with vulnerability
@@ -101,12 +120,55 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             )
         if "Vulnerabilities" not in result:
             continue
+        if "Secrets" not in result:
+            continue
         package_type = result["Type"]
+        secrets = result["Secrets"]
         vulnerabilities = result["Vulnerabilities"]
         if not isinstance(vulnerabilities, list):
             raise TypeError(
                 f"The JSON entry .Results[{idx}].Vulnerabilities is not a list, got: {type(vulnerabilities).__name__}"
             )
+        if not isinstance(secrets, list):
+            raise TypeError(
+                f"The JSON entry .Results[{idx}].Secrets is not a list, got: {type(secrets).__name__}"
+            )
+        for secret in secrets:
+            rule_id = secret["RuleID"]
+            category = secret["Category"]
+            severity = secret["Severity"]
+            title = secret["Title"]
+            startline = secret["StartLine"]
+            endline = secret["EndLine"]
+            match = secret["Match"]
+            has_issue = False
+            for existing_issue in existing_issues:
+                issue_lower = esisting_issue.lower()
+                if (
+                    issue_lower.find(match.lower()) != -1
+                    and issue_lower.find(startline.lower()) != -1
+                ):
+                    has_issue = True
+                    break
+            if has_issue:
+                continue
+                
+            lookup_id = f"{startline}:{endline}"
+                
+            report = reports.get(lookup_id)
+            if report is None:
+                report = Report(
+                    kind=result["Class"],
+                    package_type=category,
+                    package=rule_id,
+                    id=startline,
+                    target=result["Target"],
+                    vulnerabilities=[secret],
+                )
+                reports[lookup_id] = report
+            else:
+                report.vulnerabilities.append(secret)
+        
         for vulnerability in vulnerabilities:
             package_name = vulnerability["PkgName"]
             package_version = vulnerability["InstalledVersion"]
@@ -130,6 +192,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             report = reports.get(lookup_id)
             if report is None:
                 report = Report(
+                    kind=f"Vulnerability"
                     id=report_id,
                     package=package,
                     package_name=package_name,
@@ -150,37 +213,52 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
     """
     Iterates all reports and renders them into GitHub issues."""
     for report in reports:
-        issue_title = f"Security Alert: {report.package_type} package {report.package}"
+        if report.kind == "secret":
+            issue_title = f"Security Alert: {report.package_type} Secret Found - {report.package}"
 
-        issue_body = f"""\
-# Vulnerabilities found for {report.package_type} package `{report.package}` in `{report.target}`
+            issue_body = f"""\
+    # Secrets found for {report.package_type} type `{report.package}` in `{report.target}`
 
-"""
-        if report.package_fixed_version:
-            issue_body += f"""\
-## Fixed in version
-**{report.package_fixed_version}**
+    """
+    issue_body += f"""\
 
-"""
-        for vulnerability_idx, vulnerability in enumerate(
-            report.vulnerabilities, start=1
-        ):
-            reference_items = "\n".join(
-                (f"- {reference}" for reference in vulnerability["References"])
-            )
-            issue_body += f"""\
-## `{vulnerability['VulnerabilityID']}` - {vulnerability['Title']}
+    | Category     | Description | Severity | Line No. |   Match   |
+    |:------------:|:-----------:|:--------:|:--------:|:----------|
+    |{vulnerability['Category']}|{vulnerability['Title']}|{vulnerability['Severity']}|{vulnerability['Startline']}|{vulnerability['Match']}| 
+    
+    """
+        else:
+            issue_title = f"Security Alert: {report.package_type} package {report.package}"
 
-{vulnerability['Description']}
+            issue_body = f"""\
+    # Vulnerabilities found for {report.package_type} package `{report.package}` in `{report.target}`
 
-### Severity
-**{vulnerability['Severity']}**
+    """
+            if report.package_fixed_version:
+                issue_body += f"""\
+    ## Fixed in version
+    **{report.package_fixed_version}**
 
-### Primary URL
-{vulnerability['PrimaryURL']}
+    """
+            for vulnerability_idx, vulnerability in enumerate(
+                report.vulnerabilities, start=1
+            ):
+                reference_items = "\n".join(
+                    (f"- {reference}" for reference in vulnerability["References"])
+                )
+                issue_body += f"""\
+    ## `{vulnerability['VulnerabilityID']}` - {vulnerability['Title']}
 
-### References
-{reference_items}
+    {vulnerability['Description']}
 
-"""
+    ### Severity
+    **{vulnerability['Severity']}**
+
+    ### Primary URL
+    {vulnerability['PrimaryURL']}
+
+    ### References
+    {reference_items}
+
+    """
         yield Issue(report.id, report=report, title=issue_title, body=issue_body)
