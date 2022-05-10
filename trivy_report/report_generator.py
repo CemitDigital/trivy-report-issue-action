@@ -157,7 +157,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             if report is None:
                 report = Report(
                     kind="Secret",
-                    id=startine,
+                    id=startline,
                     package_type=category,
                     package=rule_id,
                     target=result["Target"],
