@@ -93,7 +93,6 @@ class Issue:
     # Body for GitHub issue
     body: str
 
-
 def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Report]:
     """
     Parses Trivy result structure and creates a report per package/version that was found.
@@ -101,6 +100,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
     :param data: The report data that was parsed from JSON file.
     :param existing_issues: List of GitHub issues, used to exclude already reported issues.
     """
+
     try:
         results = data["Results"]
     except Exception as e:
@@ -119,98 +119,94 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             raise TypeError(
                 f"The JSON entry .Results[{idx}] is not a dictionary, got: {type(result).__name__}"
             )
-            
-        if "Vulnerabilities" not in result:
-            continue
-            
-        if "Secrets" not in result:
-            continue
-            
-        vulnerabilities = result["Vulnerabilities"]
-        if vulnerabilities:
+
+        if "Vulnerabilities" in result:
+            print("Vulnerabilities found")
+            vulnerabilities = result["Vulnerabilities"]
             package_type = result["Type"]
-        secrets = result["Secrets"]
+            for vulnerability in vulnerabilities:
+                print("In vulns loop")
+                package_name = vulnerability["PkgName"]
+                package_version = vulnerability["InstalledVersion"]
+                package_fixed_version = vulnerability["FixedVersion"]
+                package = f"{package_name}-{package_version}"
+                report_id = f"{package}"
+                has_issue = False
+                print(package_name, package_version, package_fixed_version, package, report_id)
+                for existing_issue in existing_issues:
+                    issue_lower = existing_issue.lower()
+                    if (
+                        issue_lower.find(package_name.lower()) != -1
+                        and issue_lower.find(package_version.lower()) != -1
+                    ):
+                        has_issue = True
+                        break
+                if has_issue:
+                    continue
 
-        if not isinstance(vulnerabilities, list):
-            raise TypeError(
-                f"The JSON entry .Results[{idx}].Vulnerabilities is not a list, got: {type(vulnerabilities).__name__}"
-            )
-        if not isinstance(secrets, list):
-            raise TypeError(
-                f"The JSON entry .Results[{idx}].Secrets is not a list, got: {type(secrets).__name__}"
-            )
-        for secret in secrets:
-            rule_id = secret["RuleID"]
-            category = secret["Category"]
-            startline = secret["StartLine"]
-            endline = secret["EndLine"]
-            has_issue = False
-            for existing_issue in existing_issues:
-                issue_lower = existing_issue.lower()
-                if (
-                    issue_lower.find(endline.lower()) != -1
-                    and issue_lower.find(startline.lower()) != -1
-                ):
-                    has_issue = True
-                    break
-            if has_issue:
-                continue
+                lookup_id = f"{package_type}:{report_id}"
 
-            lookup_id = f"{startline}:{endline}"
+                report = reports.get(lookup_id)
+                print(report)
+                if report is None:
+                    report = Report(
+                        kind="Vulnerability",
+                        id=report_id,
+                        package=package,
+                        package_name=package_name,
+                        package_version=package_version,
+                        package_fixed_version=package_fixed_version,
+                        package_type=package_type,
+                        target=result["Target"],
+                        vulnerabilities=[vulnerability],
+                    )
+                    reports[lookup_id] = report
+                else:
+                    report.vulnerabilities.append(vulnerability)
+            continue
 
-            report = reports.get(lookup_id)
-            if report is None:
-                report = Report(
-                    kind="Secret",
-                    id=startline,
-                    package=rule_id,
-                    package_name='',
-                    package_version='',
-                    package_fixed_version='',
-                    package_type=category,
-                    target=result["Target"],
-                    vulnerabilities=[secret],
-                )
-                reports[lookup_id] = report
-            else:
-                report.vulnerabilities.append(secret)
+        if "Secrets" in result:
+            secrets = result["Secrets"]
+            for secret in secrets:
+                print("In secret loop")
+                rule_id = secret["RuleID"]
+                category = secret["Category"]
+                startline = secret["StartLine"]
+                endline = secret["EndLine"]
+                has_issue = False
+                print(rule_id, category, startline, endline)
+                for existing_issue in existing_issues:
+                    print("Checking for existing issues")
+                    issue_lower = existing_issue.lower()
+                    if (
+                        issue_lower.find(endline.lower()) != -1
+                        and issue_lower.find(startline.lower()) != -1
+                    ):
+                        has_issue = True
+                        break
+                if has_issue:
+                    continue
 
-        for vulnerability in vulnerabilities:
-            package_name = vulnerability["PkgName"]
-            package_version = vulnerability["InstalledVersion"]
-            package_fixed_version = vulnerability["FixedVersion"]
-            package = f"{package_name}-{package_version}"
-            report_id = f"{package}"
-            has_issue = False
-            for existing_issue in existing_issues:
-                issue_lower = existing_issue.lower()
-                if (
-                    issue_lower.find(package_name.lower()) != -1
-                    and issue_lower.find(package_version.lower()) != -1
-                ):
-                    has_issue = True
-                    break
-            if has_issue:
-                continue
+                lookup_id = f"{startline}:{endline}"
+                report = reports.get(lookup_id)
+                print(report)
 
-            lookup_id = f"{package_type}:{report_id}"
-
-            report = reports.get(lookup_id)
-            if report is None:
-                report = Report(
-                    kind="Vulnerability",
-                    id=report_id,
-                    package=package,
-                    package_name=package_name,
-                    package_version=package_version,
-                    package_fixed_version=package_fixed_version,
-                    package_type=package_type,
-                    target=result["Target"],
-                    vulnerabilities=[vulnerability],
-                )
-                reports[lookup_id] = report
-            else:
-                report.vulnerabilities.append(vulnerability)
+                if report is None:
+                    report = Report(
+                        kind="Secret",
+                        id=startline,
+                        package=rule_id,
+                        package_name='',
+                        package_version='',
+                        package_fixed_version='',
+                        package_type=category,
+                        target=result["Target"],
+                        vulnerabilities=[secret],
+                    )
+                    reports[lookup_id] = report
+                else:
+                    report.vulnerabilities.append(secret)
+            continue
 
     return reports.values()
 
@@ -219,6 +215,7 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
     """
     Iterates all reports and renders them into GitHub issues."""
     for report in reports:
+        print(f"In for loop and processing report: {report}")
         if report.kind == "Secret":
             issue_title = f"Security Alert: {report.package_type} Secret Found - {report.package}"
 

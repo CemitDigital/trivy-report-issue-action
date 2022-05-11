@@ -1,0 +1,307 @@
+{
+  "SchemaVersion": 2,
+  "ArtifactName": "docker.io/my-organization/my-app:1bc94c471b660e4f514a69fd8b482a35271a081b",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "OS": {
+      "Family": "debian",
+      "Name": "11.3"
+    },
+    "ImageID": "sha256:778df7090a6b75dc7c329336a22be47c29dfa073304d55786262effcb29801cf",
+    "DiffIDs": [
+      "sha256:9c1b6dd6c1e6be9fdd2b1987783824670d3b0dd7ae8ad6f57dc3cea5739ac71e",
+      "sha256:68fb9ff04fec00d8e13a3b037d033e749768338bd5c4cd5181108c4f14826f65",
+      "sha256:5b4210cf61fa56a6a7e3b1c1f49f438eb5a650a8aeacdfb92be73730e5317957",
+      "sha256:da81dd639353a5e30e7843b5411bd55b06a6d50a027f32b7cbca54dcf27ea01f",
+      "sha256:a17484f1fe2c0aba530fc8b1b326eec9f56c7427706cf15032b29d0ed482b22d",
+      "sha256:ee2fb224f6b2ceb069b3c68540df9e1883a97a43f683e1458490e514903d9cc2",
+      "sha256:88e41d64d573940e81b6d06404baa39a7f4e4c0924f3dce22981fc37733ff665",
+      "sha256:d23fde929713d95e4539c9b13d813f4bf8f7889896311e0f1bdb3e9f2b5a63df",
+      "sha256:7bd5ac634aa103dd60a67a368a41688659d08814efb00fa17f5a64fb915698d7",
+      "sha256:68af38fe6337909c66335a1ccd445e1b61f59ed3a09fc55d9e942294bee8c0d0",
+      "sha256:d4a7717b60a1adcd879dd13f331944572085b809b0c21b5dcb8983f87ee22370",
+      "sha256:cc5a60be20ee5ef89e521fa7a82678b64bb433e0419975ef88249fff3f5800bd",
+      "sha256:aeeed3867404d42fc5a5a19ba0066dfeeedc217eace54e1bfa835ae917b7a6ba",
+      "sha256:04bd87fc753cf226d51c0f0301b1f868951835a3b733233887ddee7f74135fad",
+      "sha256:2ba4a535e0a29929296c7bf841b72d9eb7f6624d8bfac8b19e17116f88c781f4",
+      "sha256:feaaba48a7a26a7f3837ab23aa994cedc22f52595ef9b6a1af35c8817ce629b0"
+    ],
+    "RepoTags": [
+      "my-organization/my-app:1bc94c471b660e4f514a69fd8b482a35271a081b"
+    ],
+    "ImageConfig": {
+      "architecture": "amd64",
+      "container": "db68b1a2d92aaafceb937355e4ba2f36ebd6161dd16ede40b8c5dfae2f6812d7",
+      "created": "2022-05-09T21:18:10.321102889Z",
+      "docker_version": "20.10.14+azure-1",
+      "history": [
+        {
+          "created": "2022-04-20T04:43:27Z",
+          "created_by": "/bin/sh -c #(nop) ADD file:8b1e79f91081eb527b455431af58e823d8b84d9d0c8e5c47cb7bda7507954ae4 in / "
+        },
+        {
+          "created": "2022-04-20T04:43:27Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"bash\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-03T07:16:14Z",
+          "created_by": "/bin/sh -c #(nop)  LABEL io.balena.architecture=amd64",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-03T07:16:27Z",
+          "created_by": "/bin/sh -c apt-get update \u0026\u0026 apt-get install -y --no-install-recommends   sudo   ca-certificates   findutils   gnupg   dirmngr   inetutils-ping   netbase   curl   udev   procps   $(       if apt-cache show 'iproute' 2\u003e/dev/null | grep -q '^Version:'; then         echo 'iproute';       else         echo 'iproute2';       fi   )   \u0026\u0026 rm -rf /var/lib/apt/lists/*   \u0026\u0026 c_rehash   \u0026\u0026 echo '#!/bin/sh\\nset -e\\nset -u\\nexport DEBIAN_FRONTEND=noninteractive\\nn=0\\nmax=2\\nuntil [ $n -gt $max ]; do\\n  set +e\\n  (\\n    apt-get update -qq \u0026\u0026\\n    apt-get install -y --no-install-recommends \"$@\"\\n  )\\n  CODE=$?\\n  set -e\\n  if [ $CODE -eq 0 ]; then\\n    break\\n  fi\\n  if [ $n -eq $max ]; then\\n    exit $CODE\\n  fi\\n  echo \"apt failed, retrying\"\\n  n=$(($n + 1))\\ndone\\nrm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*' \u003e /usr/sbin/install_packages   \u0026\u0026 chmod 0755 \"/usr/sbin/install_packages\""
+        },
+        {
+          "created": "2022-05-03T07:18:58Z",
+          "created_by": "/bin/sh -c curl -SLO \"http://resin-packages.s3.amazonaws.com/resin-xbuild/v1.0.0/resin-xbuild1.0.0.tar.gz\"   \u0026\u0026 echo \"1eb099bc3176ed078aa93bd5852dbab9219738d16434c87fc9af499368423437  resin-xbuild1.0.0.tar.gz\" | sha256sum -c -   \u0026\u0026 tar -xzf \"resin-xbuild1.0.0.tar.gz\"   \u0026\u0026 rm \"resin-xbuild1.0.0.tar.gz\"   \u0026\u0026 chmod +x resin-xbuild   \u0026\u0026 mv resin-xbuild /usr/bin   \u0026\u0026 ln -sf resin-xbuild /usr/bin/cross-build-start   \u0026\u0026 ln -sf resin-xbuild /usr/bin/cross-build-end"
+        },
+        {
+          "created": "2022-05-03T07:18:58Z",
+          "created_by": "/bin/sh -c #(nop)  ENV LC_ALL=C.UTF-8",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-03T07:18:59Z",
+          "created_by": "/bin/sh -c #(nop)  ENV DEBIAN_FRONTEND=noninteractive",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-03T07:18:59Z",
+          "created_by": "/bin/sh -c #(nop)  ENV UDEV=off",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-03T07:18:59Z",
+          "created_by": "/bin/sh -c echo 'path-exclude /usr/share/doc/*\\npath-include /usr/share/doc/*/copyright\\npath-exclude /usr/share/man/*\\npath-exclude /usr/share/groff/*\\npath-exclude /usr/share/info/*\\npath-exclude /usr/share/lintian/*\\npath-exclude /usr/share/linda/*\\npath-exclude /usr/share/locale/*\\npath-include /usr/share/locale/en*' \u003e /etc/dpkg/dpkg.cfg.d/01_nodoc"
+        },
+        {
+          "created": "2022-05-03T07:19:00Z",
+          "created_by": "/bin/sh -c echo 'APT::Get::Assume-Yes \"true\";\\nAPT::Install-Recommends \"0\";\\nAPT::Install-Suggests \"0\";\\nquiet \"true\";' \u003e /etc/apt/apt.conf.d/01_buildconfig"
+        },
+        {
+          "created": "2022-05-03T07:19:00Z",
+          "created_by": "/bin/sh -c mkdir -p /usr/share/man/man1",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-03T07:19:00Z",
+          "created_by": "/bin/sh -c #(nop) COPY file:c9829a478f08de5dc03a268d90f0d89cdee4fd7f4c87d45a6b6764d70cafa92d in /usr/bin/entry.sh "
+        },
+        {
+          "created": "2022-05-03T07:19:01Z",
+          "created_by": "/bin/sh -c #(nop) COPY file:207cdc191bada5970fb21d3481971b4a391e6e52061bd584dc75404c36d01fcf in /usr/bin/balena-info "
+        },
+        {
+          "created": "2022-05-03T07:19:01Z",
+          "created_by": "/bin/sh -c #(nop) COPY file:def7f364bfe93992865dfba2017def9a3c407b6cf8ac0233dcd0aabaa9e4b75b in /usr/bin/balena-idle "
+        },
+        {
+          "created": "2022-05-03T07:19:01Z",
+          "created_by": "/bin/sh -c #(nop)  ENTRYPOINT [\"/usr/bin/entry.sh\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-03T07:19:01Z",
+          "created_by": "/bin/sh -c curl -SLO \"https://raw.githubusercontent.com/balena-io-library/base-images/a95300eda2320833e537ca20d728a870bf02177d/scripts/assets/tests/test-os.sh\"   \u0026\u0026 echo \"Running test-os\"   \u0026\u0026 chmod +x test-os.sh   \u0026\u0026 bash test-os.sh debian bullseye   \u0026\u0026 rm -rf test-os.sh",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-03T07:19:02Z",
+          "created_by": "/bin/sh -c [ ! -d /.balena/messages ] \u0026\u0026 mkdir -p /.balena/messages; echo 'Here are a few details about this Docker image (For more information please visit https://www.balena.io/docs/reference/base-images/base-images/): \\nArchitecture: Intel 64-bit (x86-64) \\nOS: Debian Bullseye \\nVariant: run variant \\nDefault variable(s): UDEV=off \\nExtra features: \\n- Easy way to install packages with `install_packages \u003cpackage-name\u003e` command \\n- Keep the container idling with `balena-idle` command \\n- Show base image details with `balena-info` command' \u003e /.balena/messages/image-info"
+        },
+        {
+          "created": "2022-05-03T07:19:03Z",
+          "created_by": "/bin/sh -c echo '#!/bin/sh.real\\nbalena-info\\nrm -f /bin/sh\\ncp /bin/sh.real /bin/sh\\n/bin/sh \"$@\"' \u003e /bin/sh-shim \t\u0026\u0026 chmod +x /bin/sh-shim \t\u0026\u0026 cp /bin/sh /bin/sh.real \t\u0026\u0026 mv /bin/sh-shim /bin/sh"
+        },
+        {
+          "created": "2022-05-09T21:17:53Z",
+          "created_by": "/bin/sh -c #(nop)  ENV XDG_DATA_HOME=/config XDG_CONFIG_HOME=/config",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-09T21:17:54Z",
+          "created_by": "/bin/sh -c #(nop) WORKDIR /opt",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-09T21:17:55Z",
+          "created_by": "/bin/sh -c usermod -u 99 nobody"
+        },
+        {
+          "created": "2022-05-09T21:17:56Z",
+          "created_by": "/bin/sh -c mkdir -p /blackhole /config/Jackett /etc/jackett",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-09T21:18:04Z",
+          "created_by": "/bin/sh -c install_packages apt-transport-https wget curl gnupg sed openvpn curl moreutils net-tools dos2unix kmod iptables ipcalc grep libunwind8 icu-devtools liblttng-ust0 libkrb5-3 zlib1g tzdata"
+        },
+        {
+          "created": "2022-05-09T21:18:05Z",
+          "created_by": "/bin/sh -c apt-get clean     \u0026\u0026 rm -rf     /var/lib/apt/lists/*     /tmp/*     /var/tmp/*",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-09T21:18:06Z",
+          "created_by": "/bin/sh -c #(nop)  VOLUME [/blackhole /config]",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-09T21:18:08Z",
+          "created_by": "/bin/sh -c #(nop) ADD dir:c518de2f9c15aecc0d7fdf816bdc05e83ce8aa8ba5686c6c17fc2714d44c0cf4 in /etc/openvpn/ "
+        },
+        {
+          "created": "2022-05-09T21:18:08Z",
+          "created_by": "/bin/sh -c chmod +x /etc/openvpn/*.sh"
+        },
+        {
+          "created": "2022-05-09T21:18:09Z",
+          "created_by": "/bin/sh -c #(nop)  EXPOSE 9117",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-05-09T21:18:10Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/bash\" \"/etc/openvpn/start.sh\"]",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:9c1b6dd6c1e6be9fdd2b1987783824670d3b0dd7ae8ad6f57dc3cea5739ac71e",
+          "sha256:68fb9ff04fec00d8e13a3b037d033e749768338bd5c4cd5181108c4f14826f65",
+          "sha256:5b4210cf61fa56a6a7e3b1c1f49f438eb5a650a8aeacdfb92be73730e5317957",
+          "sha256:da81dd639353a5e30e7843b5411bd55b06a6d50a027f32b7cbca54dcf27ea01f",
+          "sha256:a17484f1fe2c0aba530fc8b1b326eec9f56c7427706cf15032b29d0ed482b22d",
+          "sha256:ee2fb224f6b2ceb069b3c68540df9e1883a97a43f683e1458490e514903d9cc2",
+          "sha256:88e41d64d573940e81b6d06404baa39a7f4e4c0924f3dce22981fc37733ff665",
+          "sha256:d23fde929713d95e4539c9b13d813f4bf8f7889896311e0f1bdb3e9f2b5a63df",
+          "sha256:7bd5ac634aa103dd60a67a368a41688659d08814efb00fa17f5a64fb915698d7",
+          "sha256:68af38fe6337909c66335a1ccd445e1b61f59ed3a09fc55d9e942294bee8c0d0",
+          "sha256:d4a7717b60a1adcd879dd13f331944572085b809b0c21b5dcb8983f87ee22370",
+          "sha256:cc5a60be20ee5ef89e521fa7a82678b64bb433e0419975ef88249fff3f5800bd",
+          "sha256:aeeed3867404d42fc5a5a19ba0066dfeeedc217eace54e1bfa835ae917b7a6ba",
+          "sha256:04bd87fc753cf226d51c0f0301b1f868951835a3b733233887ddee7f74135fad",
+          "sha256:2ba4a535e0a29929296c7bf841b72d9eb7f6624d8bfac8b19e17116f88c781f4",
+          "sha256:feaaba48a7a26a7f3837ab23aa994cedc22f52595ef9b6a1af35c8817ce629b0"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "/bin/bash",
+          "/etc/openvpn/start.sh"
+        ],
+        "Entrypoint": [
+          "/usr/bin/entry.sh"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "LC_ALL=C.UTF-8",
+          "DEBIAN_FRONTEND=noninteractive",
+          "UDEV=off",
+          "XDG_DATA_HOME=/config",
+          "XDG_CONFIG_HOME=/config"
+        ],
+        "Image": "sha256:c6b40a0c68823dcf5be22333461340d836a6da7cbd78c7a5618bd87c7ae265d7",
+        "Labels": {
+          "io.balena.architecture": "amd64"
+        },
+        "Volumes": {
+          "/blackhole": {},
+          "/config": {}
+        },
+        "WorkingDir": "/opt"
+      }
+    }
+  },
+  "Results": [
+    {
+      "Target": "docker.io/my-organization/my-app:1bc94c471b660e4f514a69fd8b482a35271a081b (debian 11.3)",
+      "Class": "os-pkgs",
+      "Type": "debian",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2022-1271",
+          "VendorIDs": [
+            "DSA-5122-1"
+          ],
+          "PkgName": "gzip",
+          "InstalledVersion": "1.10-4",
+          "FixedVersion": "1.10-4+deb11u1",
+          "Layer": {
+            "DiffID": "sha256:9c1b6dd6c1e6be9fdd2b1987783824670d3b0dd7ae8ad6f57dc3cea5739ac71e"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-1271",
+          "DataSource": {
+            "ID": "debian",
+            "Name": "Debian Security Tracker",
+            "URL": "https://salsa.debian.org/security-tracker-team/security-tracker"
+          },
+          "Title": "gzip: arbitrary-file-write vulnerability",
+          "Description": "An arbitrary file write vulnerability was found in GNU gzip's zgrep utility. When zgrep is applied on the attacker's chosen file name (for example, a crafted file name), this can overwrite an attacker's content to an arbitrary attacker-selected file. This flaw occurs due to insufficient validation when processing filenames with two or more newlines where selected content and the target file names are embedded in crafted multi-line file names. This flaw allows a remote, low privileged attacker to force zgrep to write arbitrary files on the system.",
+          "Severity": "HIGH",
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2022-1271",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-1271",
+            "https://linux.oracle.com/cve/CVE-2022-1271.html",
+            "https://linux.oracle.com/errata/ELSA-2022-1537.html",
+            "https://lists.gnu.org/r/bug-gzip/2022-04/msg00011.html",
+            "https://ubuntu.com/security/notices/USN-5378-1",
+            "https://ubuntu.com/security/notices/USN-5378-2",
+            "https://ubuntu.com/security/notices/USN-5378-3",
+            "https://ubuntu.com/security/notices/USN-5378-4",
+            "https://www.openwall.com/lists/oss-security/2022/04/07/8"
+          ]
+        },
+        {
+          "VulnerabilityID": "CVE-2022-1271",
+          "VendorIDs": [
+            "DSA-5123-1"
+          ],
+          "PkgName": "liblzma5",
+          "InstalledVersion": "5.2.5-2",
+          "FixedVersion": "5.2.5-2.1~deb11u1",
+          "Layer": {
+            "DiffID": "sha256:9c1b6dd6c1e6be9fdd2b1987783824670d3b0dd7ae8ad6f57dc3cea5739ac71e"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-1271",
+          "DataSource": {
+            "ID": "debian",
+            "Name": "Debian Security Tracker",
+            "URL": "https://salsa.debian.org/security-tracker-team/security-tracker"
+          },
+          "Title": "gzip: arbitrary-file-write vulnerability",
+          "Description": "An arbitrary file write vulnerability was found in GNU gzip's zgrep utility. When zgrep is applied on the attacker's chosen file name (for example, a crafted file name), this can overwrite an attacker's content to an arbitrary attacker-selected file. This flaw occurs due to insufficient validation when processing filenames with two or more newlines where selected content and the target file names are embedded in crafted multi-line file names. This flaw allows a remote, low privileged attacker to force zgrep to write arbitrary files on the system.",
+          "Severity": "HIGH",
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2022-1271",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-1271",
+            "https://linux.oracle.com/cve/CVE-2022-1271.html",
+            "https://linux.oracle.com/errata/ELSA-2022-1537.html",
+            "https://lists.gnu.org/r/bug-gzip/2022-04/msg00011.html",
+            "https://ubuntu.com/security/notices/USN-5378-1",
+            "https://ubuntu.com/security/notices/USN-5378-2",
+            "https://ubuntu.com/security/notices/USN-5378-3",
+            "https://ubuntu.com/security/notices/USN-5378-4",
+            "https://www.openwall.com/lists/oss-security/2022/04/07/8"
+          ]
+        }
+      ]
+    }
+  ]
+}

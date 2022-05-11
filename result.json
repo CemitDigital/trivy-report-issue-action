@@ -1,0 +1,43 @@
+{
+  "SchemaVersion": 2,
+  "ArtifactName": ".",
+  "ArtifactType": "filesystem",
+  "Metadata": {
+    "ImageConfig": {
+      "architecture": "",
+      "created": "0001-01-01T00:00:00Z",
+      "os": "",
+      "rootfs": {
+        "type": "",
+        "diff_ids": null
+      },
+      "config": {}
+    }
+  },
+  "Results": [
+    {
+      "Target": "MacOS/MacOS-Vanta-Agent-Install.sh",
+      "Class": "secret",
+      "Secrets": [
+        {
+          "RuleID": "aws-secret-access-key",
+          "Category": "AWS",
+          "Severity": "CRITICAL",
+          "Title": "AWS Secret Access Key",
+          "StartLine": 98,
+          "EndLine": 98,
+          "Match": "ser E-Mail\"\n        VANTA_KEY=*****h5m0czpmace0\" bash -"
+        },
+        {
+          "RuleID": "aws-secret-access-key",
+          "Category": "AWS",
+          "Severity": "CRITICAL",
+          "Title": "AWS Secret Access Key",
+          "StartLine": 102,
+          "EndLine": 102,
+          "Match": "MAIL=$email\n        VANTA_KEY=*****h5m0czpmace0\" bash -"
+        }
+      ]
+    }
+  ]
+}
