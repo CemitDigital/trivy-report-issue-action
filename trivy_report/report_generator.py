@@ -212,33 +212,35 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
             issue_title = f"Security Alert: {report.package_type} Secret Found - {report.package}"
 
             issue_body = f"""\
-            # Secrets found for {report.package_type} type `{report.package}` in `{report.target}`
+# {report.package_type} Secret found: `{report.package}` <br> File: <br> `{report.target}`
 
             """
             for vulnerability_idx, vulnerability in enumerate(
                 report.vulnerabilities, start=1
             ):
+                match = vulnerability['Match']
+                match = match.replace('\n', '<br>')
                 issue_body += f"""\
 
-                | Category     | Description | Severity | Line No. |   Match   |
-                |:------------:|:-----------:|:--------:|:--------:|:----------|
-                |{vulnerability['Category']}|{vulnerability['Title']}|{vulnerability['Severity']}|{vulnerability['StartLine']}|{vulnerability['Match']}|
+| Category     | Description | Severity | Line No. |   Match   |
+|:------------:|:-----------:|:--------:|:--------:|:----------|
+|{vulnerability['Category']}|{vulnerability['Title']}|{vulnerability['Severity']}|{vulnerability['StartLine']}|{match}|
 
-                """
+"""
 
         else:
             issue_title = f"Security Alert: {report.package_type} package {report.package}"
 
             issue_body = f"""\
-            # Vulnerabilities found for {report.package_type} package `{report.package}` in `{report.target}`
+# Vulnerabilities found for {report.package_type} package `{report.package}` in `{report.target}`
 
             """
             if report.package_fixed_version:
                 issue_body += f"""\
-                ## Fixed in version
-                **{report.package_fixed_version}**
+## Fixed in version
+**{report.package_fixed_version}**
 
-                """
+"""
             for vulnerability_idx, vulnerability in enumerate(
                 report.vulnerabilities, start=1
             ):
@@ -246,18 +248,18 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
                     (f"- {reference}" for reference in vulnerability["References"])
                 )
                 issue_body += f"""\
-                ## `{vulnerability['VulnerabilityID']}` - {vulnerability['Title']}
+## `{vulnerability['VulnerabilityID']}` - {vulnerability['Title']}
 
-                {vulnerability['Description']}
+{vulnerability['Description']}
 
-                ### Severity
-                **{vulnerability['Severity']}**
+### Severity
+**{vulnerability['Severity']}**
 
-                ### Primary URL
-                {vulnerability['PrimaryURL']}
+### Primary URL
+{vulnerability['PrimaryURL']}
 
-                ### References
-                {reference_items}
+### References
+{reference_items}
 
-                """
+"""
         yield Issue(report.id, report=report, title=issue_title, body=issue_body)
