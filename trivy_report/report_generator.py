@@ -119,11 +119,17 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             raise TypeError(
                 f"The JSON entry .Results[{idx}] is not a dictionary, got: {type(result).__name__}"
             )
-        if "Vulnerabilities" in result:
+            
+        if "Vulnerabilities" not in result:
+            continue
+            
+        if "Secrets" not in result:
+            continue
+            
+        vulnerabilities = result["Vulnerabilities"]
+        if vulnerabilities:
             package_type = result["Type"]
-            vulnerabilities = result["Vulnerabilities"]
-        if "Secrets" in result:
-            secrets = result["Secrets"]
+        secrets = result["Secrets"]
 
         if not isinstance(vulnerabilities, list):
             raise TypeError(
