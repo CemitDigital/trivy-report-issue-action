@@ -93,6 +93,7 @@ class Issue:
     # Body for GitHub issue
     body: str
 
+
 def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Report]:
     """
     Parses Trivy result structure and creates a report per package/version that was found.
@@ -143,7 +144,7 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
 
                 lookup_id = f"{package_type}:{report_id}"
                 report = reports.get(lookup_id)
-                
+
                 if report is None:
                     report = Report(
                         kind="Vulnerability",
