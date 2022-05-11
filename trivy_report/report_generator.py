@@ -121,18 +121,15 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             )
 
         if "Vulnerabilities" in result:
-            print("Vulnerabilities found")
             vulnerabilities = result["Vulnerabilities"]
             package_type = result["Type"]
             for vulnerability in vulnerabilities:
-                print("In vulns loop")
                 package_name = vulnerability["PkgName"]
                 package_version = vulnerability["InstalledVersion"]
                 package_fixed_version = vulnerability["FixedVersion"]
                 package = f"{package_name}-{package_version}"
                 report_id = f"{package}"
                 has_issue = False
-                print(package_name, package_version, package_fixed_version, package, report_id)
                 for existing_issue in existing_issues:
                     issue_lower = existing_issue.lower()
                     if (
@@ -145,9 +142,8 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
                     continue
 
                 lookup_id = f"{package_type}:{report_id}"
-
                 report = reports.get(lookup_id)
-                print(report)
+                
                 if report is None:
                     report = Report(
                         kind="Vulnerability",
@@ -168,15 +164,12 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
         if "Secrets" in result:
             secrets = result["Secrets"]
             for secret in secrets:
-                print("In secret loop")
                 rule_id = secret["RuleID"]
                 category = secret["Category"]
                 startline = secret["StartLine"]
                 endline = secret["EndLine"]
                 has_issue = False
-                print(rule_id, category, startline, endline)
                 for existing_issue in existing_issues:
-                    print("Checking for existing issues")
                     issue_lower = existing_issue.lower()
                     if (
                         issue_lower.find(endline.lower()) != -1
@@ -189,7 +182,6 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
 
                 lookup_id = f"{startline}:{endline}"
                 report = reports.get(lookup_id)
-                print(report)
 
                 if report is None:
                     report = Report(
@@ -215,7 +207,6 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
     """
     Iterates all reports and renders them into GitHub issues."""
     for report in reports:
-        print(f"In for loop and processing report: {report}")
         if report.kind == "Secret":
             issue_title = f"Security Alert: {report.package_type} Secret Found - {report.package}"
 
