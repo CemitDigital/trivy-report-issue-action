@@ -1,3 +1,5 @@
+
+
 import collections
 from dataclasses import dataclass
 from typing import Iterator, List, Optional, OrderedDict, TypedDict
@@ -6,15 +8,20 @@ from typing import Iterator, List, Optional, OrderedDict, TypedDict
 
 
 class VulnerabilityDict(TypedDict):
-    VulnerabilityID: str
-    PkgName: str
-    InstalledVersion: str
-    FixedVersion: str
+    RuleID: Optional[str]
+    Category: Optional[str]
+    Match: Optional[str]
+    StartLine: Optional[str]
+    EndLine: Optional[str]
+    VulnerabilityID: Optional[str]
+    PkgName: Optional[str]
+    InstalledVersion: Optional[str]
+    FixedVersion: Optional[str]
     Title: str
-    Description: str
+    Description: Optional[str]
     Severity: str
-    PrimaryURL: str
-    References: List[str]
+    PrimaryURL: Optional[str]
+    References: Optional[List[str]]
 
 
 class ResultDict(TypedDict):
@@ -43,7 +50,20 @@ class Vulnerability:
 
 
 @dataclass
+class Secret:
+    rule_id: str
+    category: str
+    severity: str
+    title: str
+    startline: str
+    endline: str
+    match: str
+
+
+@dataclass
 class Report:
+    # Kind of report Secret or Vulnerability
+    kind: str
     # Unique ID for report, based on package name and version
     id: str
     # Name and version of package with vulnerability
@@ -81,7 +101,13 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
     :param data: The report data that was parsed from JSON file.
     :param existing_issues: List of GitHub issues, used to exclude already reported issues.
     """
-    results = data["Results"]
+
+    try:
+        results = data["Results"]
+    except Exception as e:
+        raise KeyError(
+            f"The JSON entry does not contain Results key. Error {e}"
+        )
     if not isinstance(results, list):
         raise TypeError(
             f"The JSON entry .Results is not a list, got: {type(results).__name__}"
@@ -94,49 +120,86 @@ def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Repo
             raise TypeError(
                 f"The JSON entry .Results[{idx}] is not a dictionary, got: {type(result).__name__}"
             )
-        if "Vulnerabilities" not in result:
+
+        if "Vulnerabilities" in result:
+            vulnerabilities = result["Vulnerabilities"]
+            package_type = result["Type"]
+            for vulnerability in vulnerabilities:
+                package_name = vulnerability["PkgName"]
+                package_version = vulnerability["InstalledVersion"]
+                package_fixed_version = vulnerability["FixedVersion"]
+                package = f"{package_name}-{package_version}"
+                report_id = f"{package}"
+                has_issue = False
+                for existing_issue in existing_issues:
+                    issue_lower = existing_issue.lower()
+                    if (
+                        issue_lower.find(package_name.lower()) != -1
+                        and issue_lower.find(package_version.lower()) != -1
+                    ):
+                        has_issue = True
+                        break
+                if has_issue:
+                    continue
+
+                lookup_id = f"{package_type}:{report_id}"
+                report = reports.get(lookup_id)
+
+                if report is None:
+                    report = Report(
+                        kind="Vulnerability",
+                        id=report_id,
+                        package=package,
+                        package_name=package_name,
+                        package_version=package_version,
+                        package_fixed_version=package_fixed_version,
+                        package_type=package_type,
+                        target=result["Target"],
+                        vulnerabilities=[vulnerability],
+                    )
+                    reports[lookup_id] = report
+                else:
+                    report.vulnerabilities.append(vulnerability)
             continue
-        package_type = result["Type"]
-        vulnerabilities = result["Vulnerabilities"]
-        if not isinstance(vulnerabilities, list):
-            raise TypeError(
-                f"The JSON entry .Results[{idx}].Vulnerabilities is not a list, got: {type(vulnerabilities).__name__}"
-            )
-        for vulnerability in vulnerabilities:
-            package_name = vulnerability["PkgName"]
-            package_version = vulnerability["InstalledVersion"]
-            package_fixed_version = vulnerability["FixedVersion"]
-            package = f"{package_name}-{package_version}"
-            report_id = f"{package}"
-            has_issue = False
-            for existing_issue in existing_issues:
-                issue_lower = existing_issue.lower()
-                if (
-                    issue_lower.find(package_name.lower()) != -1
-                    and issue_lower.find(package_version.lower()) != -1
-                ):
-                    has_issue = True
-                    break
-            if has_issue:
-                continue
 
-            lookup_id = f"{package_type}:{report_id}"
+        if "Secrets" in result:
+            secrets = result["Secrets"]
+            for secret in secrets:
+                rule_id = secret["RuleID"]
+                category = secret["Category"]
+                startline = secret["StartLine"]
+                endline = secret["EndLine"]
+                has_issue = False
+                for existing_issue in existing_issues:
+                    issue_lower = existing_issue.lower()
+                    if (
+                        issue_lower.find(endline.lower()) != -1
+                        and issue_lower.find(startline.lower()) != -1
+                    ):
+                        has_issue = True
+                        break
+                if has_issue:
+                    continue
 
-            report = reports.get(lookup_id)
-            if report is None:
-                report = Report(
-                    id=report_id,
-                    package=package,
-                    package_name=package_name,
-                    package_version=package_version,
-                    package_fixed_version=package_fixed_version,
-                    package_type=package_type,
-                    target=result["Target"],
-                    vulnerabilities=[vulnerability],
-                )
-                reports[lookup_id] = report
-            else:
-                report.vulnerabilities.append(vulnerability)
+                lookup_id = f"{startline}:{endline}"
+                report = reports.get(lookup_id)
+
+                if report is None:
+                    report = Report(
+                        kind="Secret",
+                        id=startline,
+                        package=rule_id,
+                        package_name='',
+                        package_version='',
+                        package_fixed_version='',
+                        package_type=category,
+                        target=result["Target"],
+                        vulnerabilities=[secret],
+                    )
+                    reports[lookup_id] = report
+                else:
+                    report.vulnerabilities.append(secret)
+            continue
 
     return reports.values()
 
@@ -145,25 +208,46 @@ def generate_issues(reports: Iterator[Report]) -> Iterator[Issue]:
     """
     Iterates all reports and renders them into GitHub issues."""
     for report in reports:
-        issue_title = f"Security Alert: {report.package_type} package {report.package}"
+        if report.kind == "Secret":
+            issue_title = f"Security Alert: {report.package_type} Secret Found - {report.package}"
 
-        issue_body = f"""\
-# Vulnerabilities found for {report.package_type} package `{report.package}` in `{report.target}`
+            issue_body = f"""\
+# {report.package_type} Secret found: `{report.package}` <br> File: <br> `{report.target}`
+
+            """
+            for vulnerability_idx, vulnerability in enumerate(
+                report.vulnerabilities, start=1
+            ):
+                match = vulnerability['Match']
+                match = match.replace('\n', '<br>')
+                issue_body += f"""\
+
+| Category     | Description | Severity | Line No. |   Match   |
+|:------------:|:-----------:|:--------:|:--------:|:----------|
+|{vulnerability['Category']}|{vulnerability['Title']}|{vulnerability['Severity']}|{vulnerability['StartLine']}|{match}|
 
 """
-        if report.package_fixed_version:
-            issue_body += f"""\
+
+        else:
+            issue_title = f"Security Alert: {report.package_type} package {report.package}"
+
+            issue_body = f"""\
+# Vulnerabilities found for {report.package_type} package `{report.package}` in `{report.target}`
+
+            """
+            if report.package_fixed_version:
+                issue_body += f"""\
 ## Fixed in version
 **{report.package_fixed_version}**
 
 """
-        for vulnerability_idx, vulnerability in enumerate(
-            report.vulnerabilities, start=1
-        ):
-            reference_items = "\n".join(
-                (f"- {reference}" for reference in vulnerability["References"])
-            )
-            issue_body += f"""\
+            for vulnerability_idx, vulnerability in enumerate(
+                report.vulnerabilities, start=1
+            ):
+                reference_items = "\n".join(
+                    (f"- {reference}" for reference in vulnerability["References"])
+                )
+                issue_body += f"""\
 ## `{vulnerability['VulnerabilityID']}` - {vulnerability['Title']}
 
 {vulnerability['Description']}

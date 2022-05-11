@@ -37,7 +37,7 @@ tweaked for the project.
     ignore-unfixed: true
     format: 'json'
     output: 'result.json'
-- uses: CemitDigital/trivy-report-issue-action@v1.1
+- uses: b34rd-tek/trivy-report-issue-action@v1.2
   with:
     # Token passed by GitHub actions, required for access to GitHub issues
     token: ${{ secrets.GITHUB_TOKEN }}
