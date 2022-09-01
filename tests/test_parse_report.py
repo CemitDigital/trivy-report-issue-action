@@ -27,6 +27,13 @@ def test_parse_report(report_filename: str, report_count: int):
     for report in reports:
         assert isinstance(report, Report)
 
+def test_parse_report_no_results():
+    # Test that it is able to parse Trivy reports with no Results list
+    data: ReportDict = json.load(open("tests/scans/scan4.json", "rb"))
+    assert isinstance(data, dict)
+
+    parsed_result = parse_results(data, existing_issues=[])
+    assert parsed_result is None
 
 def test_parse_report1():
     data: ReportDict = json.load(open("tests/scans/scan1.json", "rb"))
