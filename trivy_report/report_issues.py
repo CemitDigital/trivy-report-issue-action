@@ -76,35 +76,40 @@ def main():
         reports = parse_results(data, existing_issues=existing_issues)
     except TypeError as e:
         abort(f"Failed to parse Trivy JSON report: {e}")
-    issues = generate_issues(reports)
 
-    for issue in issues:
-        print(f"Creating GitHub issue `{issue.title}`")
-        print(
-            f'gh --repo "{github_repo}" issue create --title "{issue.title}" --body ... --label "{input_label}" '
-            + " ".join(extra_args)
-        )
-        proc = subprocess.Popen(
-            [
-                "gh",
-                "--repo",
-                github_repo,
-                "issue",
-                "create",
-                "--title",
-                issue.title,
-                "--body",
-                issue.body,
-                "--label",
-                input_label,
-            ]
-            + extra_args
-        )
-        proc.communicate()
-        if proc.returncode != 0:
-            abort("Failed to create issue with `gh` cli")
+    if reports is None:
+        print("No reports to create issues for")
     else:
-        print("No new vulnerabilities found")
+        issues = generate_issues(reports)
+
+        for issue in issues:
+            print(f"Creating GitHub issue `{issue.title}`")
+            print(
+                f'gh --repo "{github_repo}" issue create --title "{issue.title}" --body ... --label "{input_label}" '
+                + " ".join(extra_args)
+            )
+            proc = subprocess.Popen(
+                [
+                    "gh",
+                    "--repo",
+                    github_repo,
+                    "issue",
+                    "create",
+                    "--title",
+                    issue.title,
+                    "--body",
+                    issue.body,
+                    "--label",
+                    input_label,
+                ]
+                + extra_args
+            )
+            proc.communicate()
+            if proc.returncode != 0:
+                abort("Failed to create issue with `gh` cli")
+        else:
+            print("No new vulnerabilities found")
+
 
 
 if __name__ == "__main__":

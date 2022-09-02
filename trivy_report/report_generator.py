@@ -1,6 +1,6 @@
 import collections
 from dataclasses import dataclass
-from typing import Iterator, List, Optional, OrderedDict, TypedDict
+from typing import Iterator, List, Optional, OrderedDict, Tuple, TypedDict
 
 # Types for dictionaries found in JSON data
 
@@ -74,7 +74,7 @@ class Issue:
     body: str
 
 
-def parse_results(data: ReportDict, existing_issues: List[str]) -> Iterator[Report]:
+def parse_results(data: ReportDict, existing_issues: List[str]) -> Tuple[Iterator[Report], None]:
     """
     Parses Trivy result structure and creates a report per package/version that
     was found. Return None if no Results found, ie. nothing to parse.
